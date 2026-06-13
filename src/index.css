@@ -132,3 +132,8 @@ code {
   padding: 10px;
   cursor: pointer;
 }
+
+.active-page{
+  background-color: #9ca3af;
+  color: white;
+}
