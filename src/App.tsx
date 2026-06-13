@@ -3,14 +3,19 @@ import './App.css'
 
 
 //Display Posts
-const DisplayPosts = ({posts}) =>{
+const DisplayPosts = ({posts , currentPage}) =>{
+  //filter posts based on page
+  const start = currentPage*10
+  const end =  (currentPage*10)+10
+  const filterPosts = posts.slice(start,end)
+
   return (
     <>
     <h4>Here are your posts</h4>
     {
-      posts && posts?.length>0 && posts.map((post)=>
+      filterPosts && filterPosts?.length>0 && filterPosts.map((post)=>
           <div className='display-post '>
-            <h5>{post.title}</h5>
+            <h5>{post.id}{". "}{post.title}</h5>
             <p>{post.body}</p>
           </div>
         )
@@ -19,7 +24,8 @@ const DisplayPosts = ({posts}) =>{
   )
 }
 
-const FetchPagination=({pagination, totalPosts})=>{
+//Display and calculate total no of pages
+const FetchPagination=({pagination, totalPosts,setPage})=>{
   const totalPages = Math.ceil((totalPosts/pagination))
   const arr = Array(totalPages).fill('')
   console.log('Pagination Details', totalPages, arr)
@@ -27,7 +33,7 @@ const FetchPagination=({pagination, totalPosts})=>{
     <div className='display-pagination'>
       {
        arr.map((_,page)=>
-          <h5 className='page-number'>{page+1}</h5>
+          <h5 className='page-number' onClick={()=>{setPage(page)}}>{page+1}</h5>
       )}
     </div>
   )
@@ -35,6 +41,8 @@ const FetchPagination=({pagination, totalPosts})=>{
 
 function App() {
   const [posts , setPosts]= useState([])
+  const [currentpage , setPage]= useState(0)
+
 
   //Fetch Posts
   const getPosts = async() =>{
@@ -52,8 +60,8 @@ function App() {
   return (
     <>
       <h1>Data Lens</h1>
-      <DisplayPosts posts={posts}/>
-      <FetchPagination pagination={10} totalPosts={posts.length}/>
+      <DisplayPosts posts={posts} currentPage={currentpage}/>
+      <FetchPagination pagination={10} totalPosts={posts.length} setPage={setPage}/>
     </>
   )
 }
