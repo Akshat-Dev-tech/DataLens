@@ -19,6 +19,20 @@ const DisplayPosts = ({posts}) =>{
   )
 }
 
+const FetchPagination=({pagination, totalPosts})=>{
+  const totalPages = Math.ceil((totalPosts/pagination))
+  const arr = Array(totalPages).fill('')
+  console.log('Pagination Details', totalPages, arr)
+  return (
+    <div className='display-pagination'>
+      {
+       arr.map((_,page)=>
+          <h5 className='page-number'>{page+1}</h5>
+      )}
+    </div>
+  )
+}
+
 function App() {
   const [posts , setPosts]= useState([])
 
@@ -39,6 +53,7 @@ function App() {
     <>
       <h1>Data Lens</h1>
       <DisplayPosts posts={posts}/>
+      <FetchPagination pagination={10} totalPosts={posts.length}/>
     </>
   )
 }
